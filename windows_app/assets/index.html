@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q1 Browser</title>
+<style>
+  :root{
+    --bg:#0b1e3f; --bg2:#0e2a55; --panel:#101f3a; --line:#253a62;
+    --text:#eaf2ff; --muted:#9fb3d0; --accent:#4ea1ff; --accent2:#00b4d8;
+    --green:#37d67a; --red:#ff5c7a;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:"Segoe UI",system-ui,Arial,sans-serif;background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--text);overflow:hidden}
+  .app{display:flex;flex-direction:column;height:100%}
+
+  /* toolbar */
+  .toolbar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(10,22,45,.9);border-bottom:1px solid var(--line);flex-wrap:nowrap}
+  .logo{font-weight:800;font-size:18px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 6px 0 4px;white-space:nowrap}
+  button{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 11px;cursor:pointer;font-size:14px;white-space:nowrap}
+  button:hover{border-color:var(--accent)}
+  button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
+  .addr{flex:1;display:flex;gap:6px;min-width:0}
+  #url{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;font-size:14px;outline:none;min-width:0}
+  #url:focus{border-color:var(--accent)}
+  .icon{font-size:16px;line-height:1;padding:7px 9px}
+  .active{background:#173a6b;border-color:var(--accent)}
+
+  /* tabs */
+  .tabbar{display:flex;align-items:center;gap:4px;padding:4px 8px;background:rgba(8,18,38,.7);border-bottom:1px solid var(--line);overflow-x:auto}
+  .tab{display:flex;align-items:center;gap:6px;max-width:210px;min-width:120px;padding:6px 10px;background:var(--panel);border:1px solid var(--line);border-radius:7px 7px 0 0;cursor:pointer;color:var(--muted)}
+  .tab.active{background:#173a6b;color:var(--text);border-color:var(--accent)}
+  .tab .t-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:13px}
+  .tab .t-close{cursor:pointer;padding:0 4px;opacity:.7}
+  .tab .t-close:hover{opacity:1}
+  .tab.private{border-left:3px solid var(--accent2)}
+  .newtab-btn{flex:none}
+
+  /* main */
+  .main{display:flex;flex:1;min-height:0}
+  .pages{flex:1;position:relative;min-width:0;background:#fff}
+  .page{position:absolute;inset:0;border:0;display:none;width:100%;height:100%}
+  .page.active{display:block}
+  .side{width:340px;display:none;background:var(--panel);border-left:1px solid var(--line);flex-direction:column}
+  .side.open{display:flex}
+  .side h3{margin:10px 14px;font-size:15px}
+  .chat-box{flex:1;overflow:auto;padding:10px 14px}
+  .chat-row{margin-bottom:12px}
+  .chat-user{color:var(--accent);font-weight:600}
+  .chat-ai{color:var(--green);font-weight:600}
+  .chat-text{white-space:pre-wrap;word-break:break-word;color:var(--text);margin-top:3px}
+  .chat-input-row{display:flex;gap:6px;padding:10px}
+  textarea#chat-input{flex:1;background:#0c1830;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px;resize:none;height:54px;font-size:14px}
+
+  /* modals */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100}
+  .modal-bg.open{display:flex}
+  .modal{width:min(620px,94vw);max-height:88vh;overflow:auto;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .modal h2{margin-top:0}
+  .modal label{display:block;margin:10px 0 4px;color:var(--muted)}
+  .modal input,.modal select,.modal textarea{width:100%;background:#0c1830;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px;font-size:14px}
+  .list-item{display:flex;align-items:center;gap:10px;padding:7px;border:1px solid var(--line);border-radius:8px;margin:5px 0}
+  .list-item .info{flex:1;min-width:0;overflow:hidden}
+  .list-item .info b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .list-item .info span{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+  .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+  .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="toolbar">
+    <div class="logo">Q1</div>
+    <button class="icon" id="back" title="Back">←</button>
+    <button class="icon" id="forward" title="Forward">→</button>
+    <button class="icon" id="reload" title="Reload">⟳</button>
+    <button class="icon" id="home" title="Home">⌂</button>
+    <div class="addr">
+      <input id="url" placeholder="Search the web or enter an address…" autocomplete="off">
+      <button class="primary" id="go">Go</button>
+    </div>
+    <button id="bookmark" title="Add bookmark">☆</button>
+    <button id="history-btn" title="History">⟲</button>
+    <button id="ai-toggle" title="AI assistant" class="active">AI</button>
+    <button id="settings-btn" title="Settings">⚙</button>
+  </div>
+
+  <div class="tabbar">
+    <button class="newtab-btn" id="new-tab" title="New tab">+ Tab</button>
+    <button class="newtab-btn" id="new-private" title="New private tab">+ Private</button>
+    <span style="flex:1"></span>
+  </div>
+
+  <div class="main">
+    <div id="pages" class="pages"></div>
+    <div id="side" class="side">
+      <h3>AI Assistant</h3>
+      <div id="chat-box" class="chat-box"></div>
+      <div class="chat-input-row">
+        <textarea id="chat-input" placeholder="Ask the AI… (Enter to send)"></textarea>
+        <button id="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal" id="modal-body"></div>
+</div>
+
+<script>
+"use strict";
+
+let api = null;
+let config = {};
+let tabs = [];
+let activeId = 0;
+let sideOpen = true;
+let bookmarkOpen = false;
+let historyOpen = false;
+
+const $ = (id) => document.getElementById(id);
+const pages = $("pages");
+const urlInput = $("url");
+const side = $("side");
+const chatBox = $("chat-box");
+const modal = $("modal");
+const modalBody = $("modal-body");
+
+function waitForApi(timeout=5000){
+  return new Promise(resolve=>{
+    const t0=Date.now();
+    const fn=()=>{
+      if(window.pywebview && window.pywebview.api) resolve(window.pywebview.api);
+      else if(Date.now()-t0>timeout) resolve(null);
+      else setTimeout(fn,80);
+    };
+    fn();
+  });
+}
+
+function normalizeUrl(v){
+  v=(v||"").trim();
+  if(!v || v==="newtab") return config.homepage && config.homepage!=="newtab" ? config.homepage : "about:blank";
+  if(/^(https?|file|about):\/\//i.test(v)) return v;
+  if(/^[^ ]+\.[a-z]{2,}(\/.*)?$/i.test(v)) return "https://"+v.replace(/^www\./i,"");
+  const t=(config.search_url||"https://duckduckgo.com/?q={}");
+  return t.includes("{") ? t.replace("{}", encodeURIComponent(v)) : t+"?"+encodeURIComponent(v)+"="+encodeURIComponent(v);
+}
+
+function renderTabs(){
+  const bar=document.querySelector(".tabbar");
+  bar.querySelectorAll(".tab").forEach(n=>n.remove());
+  tabs.forEach(tab=>{
+    const el=document.createElement("div");
+    el.className="tab"+(tab.private?" private":"")+(tab.id===activeId?" active":"");
+    el.innerHTML=`<span class="t-title">${escapeHtml(tab.title||"New Tab")}</span><span class="t-close">×</span>`;
+    el.addEventListener("click",e=>{
+      if(e.target.classList.contains("t-close")){ closeTab(tab.id); return; }
+      switchTab(tab.id);
+    });
+    bar.appendChild(el);
+  });
+}
+
+function makePage(tab){
+  const f=document.createElement("iframe");
+  f.className="page"; f.id="page-"+tab.id; f.setAttribute("allow","fullscreen; clipboard-read; clipboard-write");
+  f.addEventListener("load",()=>{
+    try{ if(f.contentWindow && f.contentWindow.location && f.contentWindow.location.href) tab.url=f.contentWindow.location.href; }catch(e){}
+    if(api && !tab.private) api.history_add(tab.title, tab.url, tab.private).catch(()=>{});
+  });
+  return f;
+}
+
+function newTab(url, privateTab){
+  const tab={id:Date.now()+Math.floor(Math.random()*1000), url: normalizeUrl(url||config.homepage||"newtab"), title: url||"New Tab", private:!!privateTab};
+  tab.page=makePage(tab);
+  pages.appendChild(tab.page);
+  tabs.push(tab);
+  switchTab(tab.id);
+  tab.page.src=tab.url;
+  renderTabs();
+}
+
+function switchTab(id){
+  const tab=tabs.find(t=>t.id===id);
+  if(!tab) return;
+  activeId=id;
+  tabs.forEach(t=>{ if(t.page) t.page.classList.toggle("active",t.id===id); });
+  urlInput.value=(tab.url==="newtab"||tab.url==="about:blank"||!tab.url) ? "" : tab.url;
+  $("bookmark").textContent="☆";
+  renderTabs();
+}
+
+function closeTab(id){
+  const idx=tabs.findIndex(t=>t.id===id);
+  if(idx<0) return;
+  const tab=tabs.splice(idx,1)[0];
+  if(tab.page) tab.page.remove();
+  if(tabs.length===0){ newTab(); return; }
+  if(activeId===id) switchTab(tabs[Math.max(0,idx-1)].id);
+  renderTabs();
+}
+
+function activeTab(){ return tabs.find(t=>t.id===activeId); }
+
+function navigateFromBar(){
+  const tab=activeTab(); if(!tab) return;
+  const v=urlInput.value;
+  const u=normalizeUrl(v);
+  tab.url=u; tab.title=v.split("/")[0]||v||"New Tab";
+  tab.page.src=u;
+  if(api && !tab.private) api.history_add(tab.title, tab.url, tab.private).catch(()=>{});
+  renderTabs();
+  urlInput.blur();
+}
+
+function navigateTo(u){
+  const tab=activeTab(); if(!tab) return;
+  const nu=normalizeUrl(u);
+  tab.url=nu; tab.title=nu;
+  tab.page.src=nu;
+  if(api && !tab.private) api.history_add(tab.title, tab.url, tab.private).catch(()=>{});
+  urlInput.value=nu;
+  renderTabs();
+}
+
+async function openModal(title, bodyHtml){
+  modalBody.innerHTML=`<h2>${escapeHtml(title)}</h2>${bodyHtml}`;
+  modal.classList.add("open");
+}
+
+function closeModal(){ modal.classList.remove("open"); }
+modal.addEventListener("click",e=>{ if(e.target===modal) closeModal(); });
+
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function escapeAttr(s){
+  return (s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderBookmarks(items){
+  const rows=items.map(b=>`<div class="list-item"><div class="info"><b>${escapeHtml(b.title)}</b><span>${escapeHtml(b.url)}</span></div><button data-open="${escapeAttr(b.url)}">Open</button><button data-del="${escapeAttr(b.url)}">Remove</button></div>`).join("") || `<div class="muted">No bookmarks yet.</div>`;
+  openModal("Bookmarks", rows + `<div class="actions"><button id="bm-close">Close</button></div>`);
+  modalBody.querySelector("#bm-close").addEventListener("click",closeModal);
+  modalBody.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",async()=>{
+    navigateTo(b.dataset.open); closeModal();
+  }));
+  modalBody.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",async()=>{
+    if(api) await api.bookmarks_remove(b.dataset.del);
+    if(api) renderBookmarks(await api.bookmarks_list());
+  }));
+}
+
+function renderHistory(items){
+  const rows=items.map(h=>`<div class="list-item"><div class="info"><b>${escapeHtml(h.title)}</b><span>${escapeHtml(h.url)}</span></div><button data-open="${escapeAttr(h.url)}">Open</button></div>`).join("") || `<div class="muted">No history yet.</div>`;
+  openModal("History", rows + `<div class="actions"><button id="hist-clear">Clear</button><button id="hist-close">Close</button></div>`);
+  modalBody.querySelector("#hist-close").addEventListener("click",closeModal);
+  modalBody.querySelector("#hist-clear").addEventListener("click",async()=>{
+    if(api) await api.history_clear();
+    if(api) renderHistory(await api.history_list());
+  });
+  modalBody.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{ navigateTo(b.dataset.open); closeModal(); }));
+}
+
+async function renderSettings(){
+  const s=config;
+  openModal("Settings", `
+    <label>Homepage</label><input id="set-home" value="${escapeAttr(s.homepage||"")}" placeholder="Leave empty for new tab">
+    <label>Search URL ({}=query)</label><input id="set-search" value="${escapeAttr(s.search_url)}">
+    <label>AI base URL (OpenAI-compatible)</label><input id="set-ai-base" value="${escapeAttr(s.ai_base_url)}">
+    <label>AI model</label><input id="set-ai-model" value="${escapeAttr(s.ai_model)}">
+    <label>AI API key (optional)</label><input id="set-ai-key" value="${escapeAttr(s.ai_api_key)}" type="password">
+    <div class="actions"><button id="set-cancel">Cancel</button><button class="primary" id="set-save">Save</button></div>
+  `);
+  modalBody.querySelector("#set-cancel").addEventListener("click",closeModal);
+  modalBody.querySelector("#set-save").addEventListener("click",async()=>{
+    const updated={
+      homepage:$("set-home").value.trim(),
+      search_url:$("set-search").value.trim() || "https://duckduckgo.com/?q={}",
+      ai_base_url:$("set-ai-base").value.trim(),
+      ai_model:$("set-ai-model").value.trim() || "llama3.2",
+      ai_api_key:$("set-ai-key").value.trim(),
+    };
+    if(api){ config=await api.config_set(updated); }
+    closeModal();
+  });
+}
+
+function chatAppend(role, text){
+  const div=document.createElement("div");
+  div.className="chat-row";
+  div.innerHTML=`<div class="${role==='user'?'chat-user':'chat-ai'}">${role==='user'?'You':'AI'}</div><div class="chat-text">${escapeHtml(text)}</div>`;
+  chatBox.appendChild(div);
+  chatBox.scrollTop=chatBox.scrollHeight;
+}
+
+async function sendChat(){
+  const input=$("chat-input");
+  const msg=input.value.trim();
+  if(!msg || !api) return;
+  input.value="";
+  chatAppend("user", msg);
+  chatAppend("ai","…");
+  try{
+    const r=await api.ai_chat(msg);
+    chatBox.lastElementChild.remove();
+    chatAppend("ai", r&&r.ok ? r.reply : ("Error: "+(r&&r.error||"AI unavailable")));
+  }catch(e){
+    chatBox.lastElementChild.remove();
+    chatAppend("ai","Error: "+e);
+  }
+}
+
+async function init(){
+  api=await waitForApi();
+  if(api){
+    try{ config=await api.config_get(); }catch(e){ config={}; }
+    if(!config.search_url) config.search_url="https://duckduckgo.com/?q={}";
+    if(!config.ai_base_url) config.ai_base_url="http://127.0.0.1:11434/v1";
+    if(!config.ai_model) config.ai_model="llama3.2";
+  }
+  newTab("", false);
+  side.classList.toggle("open", sideOpen);
+
+  $("back").addEventListener("click",()=>{ const t=activeTab(); if(t&&t.page.contentWindow) t.page.contentWindow.history.back(); });
+  $("forward").addEventListener("click",()=>{ const t=activeTab(); if(t&&t.page.contentWindow) t.page.contentWindow.history.forward(); });
+  $("reload").addEventListener("click",()=>{ const t=activeTab(); if(t&&t.page) t.page.src=t.page.src; });
+  $("home").addEventListener("click",()=>navigateTo(config.homepage||"https://duckduckgo.com"));
+  $("go").addEventListener("click",navigateFromBar);
+  urlInput.addEventListener("keydown",e=>{ if(e.key==="Enter") navigateFromBar(); });
+  $("new-tab").addEventListener("click",()=>newTab("",false));
+  $("new-private").addEventListener("click",()=>newTab("https://duckduckgo.com",true));
+  $("ai-toggle").addEventListener("click",()=>{ sideOpen=!sideOpen; side.classList.toggle("open",sideOpen); $("ai-toggle").classList.toggle("active",sideOpen); });
+  $("settings-btn").addEventListener("click",renderSettings);
+  $("history-btn").addEventListener("click",async()=>{ if(api) renderHistory(await api.history_list()); });
+  $("bookmark").addEventListener("click",async()=>{
+    const tab=activeTab(); if(!tab||!api) return;
+    if(tab.url==="newtab") return;
+    const ok=await api.bookmarks_add(tab.title||tab.url, tab.url);
+    $("bookmark").textContent=ok?"★":"☆";
+  });
+  $("chat-send").addEventListener("click",sendChat);
+  $("chat-input").addEventListener("keydown",e=>{ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); sendChat(); }});
+}
+
+document.addEventListener("DOMContentLoaded",init);
+</script>
+</body>
+</html>

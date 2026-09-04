@@ -1,4 +1,0 @@
-bb879316cc1d9ac09f2c78e2fecdf386bb8130c0a9ab7e24a41d88f6e72a0ded  Q1Browser-Windows-Portable.zip.000
-a56947845af844908ea349a3544e393f6c0595f9e6a499da3be12cd3f47d7dd3  Q1Browser-Windows-Portable.zip.001
-498d8bfa236b41a1f6d855286170787c1b1e6ec1b78b858e1559abb5a57d4827  Q1Browser-Windows-Portable.zip.002
-d9a534e72104734c05cc869ee17b93a78eca7d3d83969503be7ee3e76f5800ea  Q1Browser.exe

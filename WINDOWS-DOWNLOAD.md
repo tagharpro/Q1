@@ -1,38 +1,35 @@
 # دانلود نسخه‌ی ویندوز Q1 Browser
 
-سریع‌ترین راه: از صفحه‌ی ریلیز، فایل **Source code (zip)** را دانلود کنید
-(این فایل شامل همه‌ی فایل‌های باینری است):
-👉 https://github.com/tagharpro/Q1/releases/tag/v1.0.0-windows
+## ⬇️ فایل قابل دانلود
 
-نسخه‌ی قابل حمل (Portable) ویندوز به سه فایل تقسیم شده است (به دلیل محدودیت حجم گیت‌هاب).
-هر سه فایل را از همین مخزن دانلود کنید، سپس فایل `dist\merge-windows.bat` را اجرا کنید تا فایل ZIP اصلی ساخته شود.
+نسخه‌ی آماده‌ی ویندوز به‌صورت **یک فایل ZIP** (حدود ۱۳٫۵ مگابایت) در مخزن قرار دارد:
 
-## فایل‌های لازم
+📦 **https://github.com/tagharpro/Q1/blob/v1.0.1-windows/dist/Q1Browser-Windows.zip**
 
-| فایل | حجم |
-| --- | --- |
-| `dist/Q1Browser.exe` | ~186 KB (لانچر) |
-| `dist/Q1Browser-Windows-Portable.zip.000` | ~76 MB |
-| `dist/Q1Browser-Windows-Portable.zip.001` | ~76 MB |
-| `dist/Q1Browser-Windows-Portable.zip.002` | ~67 MB |
-| `dist/merge-windows.bat` | ~1 KB |
+## 🔧 روش نصب
 
-## روش استفاده
+1. فایل `Q1Browser-Windows.zip` را دانلود کنید.
+2. آن را Extract کنید.
+3. Enter پوشه‌ی `Q1Browser-WebView2-Windows` شوید.
+4. روی `Q1Browser.exe` دوبار کلیک کنید.
 
-```bat
-:: در پوشه‌ای که سه فایل .zip.xxx را دارید
-dist\merge-windows.bat
-```
+دیگر نیازی به نصب نیست. اگر پیام SmartScreen آمد: **More info → Run anyway**.
 
-بعد از اجرا فایل `Q1Browser-Windows-Portable.zip` ساخته می‌شود.
-آن را Extract کنید و داخل پوشه‌ی به‌دست‌آمده روی `Q1Browser.exe` دوبار کلیک کنید.
+## ⚠️ پیش‌نیاز
 
-## لینک مستقیم (مخزن گیت‌هاب)
+این نسخه از **Microsoft Edge WebView2 Runtime** استفاده می‌کند که روی ویندوز ۱۱ و اکثر ویندوز ۱۰ نصب است.
+اگر اجرا نشد، آن را از مایکروسافت نصب کنید:
 
-- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.000
-- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.001
-- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.002
-- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser.exe
-- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/merge-windows.bat
+👉 https://developer.microsoft.com/microsoft-edge/webview2/
 
-> اگر داخل صفحه‌ی گیت‌هاب هستید، `Raw` یا `Download` را بزنید تا نسخه‌ی خام فایل دانلود شود.
+همچنین **.NET Framework 4.7.2 یا بالاتر** لازم است (به‌صورت پیش‌فرض روی ویندوز ۱۰/۱۱ نصب است).
+
+## 🤖 هوش مصنوعی
+
+در برنامه روی دکمه‌ی **AI** کلیک کنید، سپس **Settings** را باز کنید و:
+
+- AI base URL: `http://127.0.0.1:11434/v1` (برای Ollama)
+- AI model: `llama3.2`
+- API key: خالی (برای Ollama)
+
+سپس سؤال خود را در پنل AI بپرسید.

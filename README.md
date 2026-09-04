@@ -19,30 +19,21 @@
 
 ## ✅ دانلود و نصب (ویندوز)
 
-نسخه‌ی آماده‌ی ویندوز در صفحه‌ی Releases و در خود مخزن موجود است:
+نسخه‌ی آماده‌ی ویندوز به‌صورت **یک فایل ZIP** در خود مخزن موجود است:
 
-> 👉 **https://github.com/tagharpro/Q1/releases/tag/v1.0.0-windows**
-
-چون گیت‌هاب اجازه‌ی آپلود asset جداگانه نداشت، فایل Portable به‌صورت **سه بخش** داخل مخزن قرار دارد:
-
-| فایل | حجم | لینک |
-| --- | --- | --- |
-| `dist/Q1Browser-Windows-Portable.zip.000` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.000) |
-| `dist/Q1Browser-Windows-Portable.zip.001` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.001) |
-| `dist/Q1Browser-Windows-Portable.zip.002` | ~67 MB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.002) |
-| `dist/Q1Browser.exe` | ~186 KB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser.exe) |
-| `dist/merge-windows.bat` | ~1 KB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/merge-windows.bat) |
+> 👉 **[Q1Browser-Windows.zip](https://github.com/tagharpro/Q1/blob/v1.0.1-windows/dist/Q1Browser-Windows.zip)** (حدود ۱۳٫۵ MB)
 
 ### روش نصب
 
-1. هر **۳ فایل `.zip.000` و `.zip.001` و `.zip.002`** و فایل `merge-windows.bat` را در یک پوشه دانلود کنید.
-2. روی `merge-windows.bat` دوبار کلیک کنید تا فایل `Q1Browser-Windows-Portable.zip` ساخته شود.
-3. فایل ZIP را Extract کنید.
-4. داخل پوشه‌ی Extract شده روی `Q1Browser.exe` دوبار کلیک کنید.
+1. فایل `Q1Browser-Windows.zip` را دانلود کنید.
+2. آن را Extract کنید.
+3. پوشه‌ی `Q1Browser-WebView2-Windows` را باز کنید.
+4. روی `Q1Browser.exe` دوبار کلیک کنید.
 5. سیستم‌عامل ممکن است از شما تأیید بگیرد؛ **More info → Run anyway** را بزنید.
    (فایل امضای دیجیتال تجاری ندارد، چون پروژه‌ی متن‌باز/شخصی است.)
 
-دیگر نیازی به نصب نیست — این نسخه **پورتابل** است، بدون نصب اجرا می‌شود و شامل Python و Qt WebEngine داخلی است.
+این نسخه **پورتابل** است، بدون نصب اجرا می‌شود و فقط به **WebView2 Runtime** (روی ویندوز ۱۱ و اکثر ویندوز ۱۰ نصب است) نیاز دارد.
+اگر اجرا نشد، WebView2 Runtime را از [مایکروسافت](https://developer.microsoft.com/microsoft-edge/webview2/) نصب کنید.
 
 ---
 
@@ -102,23 +93,23 @@ pip install -r requirements.txt
 python run.py
 ```
 
-## 📦 ساخت نسخه‌ی ویندوز
+## 📦 ساخت نسخه‌ی ویندوز (WebView2)
 
-روی سیستم خودتان (ویندوز):
+برای ساخت نسخه‌ی کوچک و Portable با موتور Edge WebView2:
 
 ```bash
-pip install -r requirements.txt pyinstaller
-python build.py --portable
+# python-embed = CPython embeddable wheel (از PyPI)
+# webview_wheels = pywebview, pythonnet, bottle, typing_extensions, proxy_tools
+# vc-dir       = پوشه‌ای که msvcp140.dll های مایکروسافت را دارد
+
+python tools/package_webview2_windows.py \
+  --pyembed-dir /tmp/pyembed \
+  --wheel-dir /tmp/webview_wheels \
+  --launcher /tmp/buildwin/Q1Browser.exe \
+  --vc-dir /path/to/vc-runtime
 ```
 
-خروجی: `dist/Q1Browser-Windows-Portable.zip`
-
-همچنین GitHub Actions در هر Push یک بیلد خودکار ویندوز (`windows-latest`) می‌سازد و
-آرتیفکت `Q1Browser-Windows-Portable` را آپلود می‌کند.
-
-> **فعال‌سازی بیلد خودکار:** فایل `ci/build-windows.yml` داخل مخزن هست.
-> برای اجرای خودکار، در GitHub: **Actions → I understand my workflows, go ahead and enable them** را بزنید
-> (یا فایل را کپی‌کنید به `.github/workflows/build-windows.yml`).
+خروجی: `dist/Q1Browser-Windows.zip`
 
 ---
 
@@ -137,8 +128,10 @@ Q1/
 │  ├─ dialogs.py        # تنظیمات/بوکمارک/تاریخچه
 │  ├─ settings.py       # تنظیمات ماندگار
 │  └─ storage.py        # ذخیره‌ی بوکمارک و تاریخچه
+├─ windows_app/         # نسخه‌ی WebView2 (Windows portable)
 ├─ assets/              # آیکون و New Tab
-├─ build.py             # ساخت بیلد PyInstaller
+├─ build.py             # ساخت بیلد PyInstaller (نسخه‌ی Qt)
+├─ tools/               # اسکریپت‌های بسته‌بندی (Qt و WebView2)
 └─ ci/                  # وردفلو GitHub Actions برای بیلد خودکار ویندوز
 ```
 
