@@ -103,6 +103,10 @@ python build.py --portable
 همچنین GitHub Actions در هر Push یک بیلد خودکار ویندوز (`windows-latest`) می‌سازد و
 آرتیفکت `Q1Browser-Windows-Portable` را آپلود می‌کند.
 
+> **فعال‌سازی بیلد خودکار:** فایل `ci/build-windows.yml` داخل مخزن هست.
+> برای اجرای خودکار، در GitHub: **Actions → I understand my workflows, go ahead and enable them** را بزنید
+> (یا فایل را کپی‌کنید به `.github/workflows/build-windows.yml`).
+
 ---
 
 ## 📁 ساختار پروژه
@@ -122,7 +126,7 @@ Q1/
 │  └─ storage.py        # ذخیره‌ی بوکمارک و تاریخچه
 ├─ assets/              # آیکون و New Tab
 ├─ build.py             # ساخت بیلد PyInstaller
-└─ .github/workflows/   # بیلد خودکار ویندوز
+└─ ci/                  # وردفلو GitHub Actions برای بیلد خودکار ویندوز
 ```
 
 ## 📄 مجوز

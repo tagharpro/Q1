@@ -1,3 +1,6 @@
+# Q1 Browser Windows build (PyInstaller + GitHub Actions).
+# Enable GitHub Actions in the repo, then move/copy this file to
+# .github/workflows/build-windows.yml to build automatically.
 name: Build Windows
 
 on:
