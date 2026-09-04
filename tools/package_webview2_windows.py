@@ -28,6 +28,9 @@ PYTHON_WHEELS = []
 PYTHON_PACKAGES = [
     ("pywebview", "wheel"),
     ("pythonnet", "wheel"),
+    ("clr_loader", "wheel"),
+    ("cffi", "wheel"),
+    ("pycparser", "wheel"),
     ("bottle", "wheel"),
     ("typing_extensions", "wheel"),
     ("importlib_resources", "wheel"),
