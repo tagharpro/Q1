@@ -29,10 +29,10 @@ dist\merge-windows.bat
 
 ## لینک مستقیم (مخزن گیت‌هاب)
 
-- https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.000
-- https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.001
-- https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.002
-- https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser.exe
-- https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/merge-windows.bat
+- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.000
+- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.001
+- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.002
+- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser.exe
+- https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/merge-windows.bat
 
 > اگر داخل صفحه‌ی گیت‌هاب هستید، `Raw` یا `Download` را بزنید تا نسخه‌ی خام فایل دانلود شود.

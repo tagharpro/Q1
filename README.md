@@ -27,11 +27,11 @@
 
 | فایل | حجم | لینک |
 | --- | --- | --- |
-| `dist/Q1Browser-Windows-Portable.zip.000` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.000) |
-| `dist/Q1Browser-Windows-Portable.zip.001` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.001) |
-| `dist/Q1Browser-Windows-Portable.zip.002` | ~67 MB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.002) |
-| `dist/Q1Browser.exe` | ~186 KB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser.exe) |
-| `dist/merge-windows.bat` | ~1 KB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/merge-windows.bat) |
+| `dist/Q1Browser-Windows-Portable.zip.000` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.000) |
+| `dist/Q1Browser-Windows-Portable.zip.001` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.001) |
+| `dist/Q1Browser-Windows-Portable.zip.002` | ~67 MB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser-Windows-Portable.zip.002) |
+| `dist/Q1Browser.exe` | ~186 KB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/Q1Browser.exe) |
+| `dist/merge-windows.bat` | ~1 KB | [دانلود](https://github.com/tagharpro/Q1/blob/v1.0.0-windows/dist/merge-windows.bat) |
 
 ### روش نصب
 
