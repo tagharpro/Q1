@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Tab</title>
+<style>
+  :root{
+    --bg1:#0b1e3f; --bg2:#0e2a55; --accent:#4ea1ff; --accent2:#00b4d8;
+    --card:rgba(255,255,255,.08); --text:#eaf2ff; --muted:#a6b8d4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI",system-ui,Arial,sans-serif;
+       background:radial-gradient(1200px 700px at 15% -10%, #144a8f, transparent),
+                  linear-gradient(160deg,var(--bg1),var(--bg2));
+       color:var(--text);display:flex;align-items:center;justify-content:center}
+  .wrap{width:min(760px,90vw);text-align:center;padding:40px 0}
+  .logo{font-size:96px;font-weight:800;line-height:1;background:linear-gradient(90deg,var(--accent),var(--accent2));
+        -webkit-background-clip:text;background-clip:text;color:transparent}
+  h1{font-size:40px;margin:18px 0 6px}
+  p{color:var(--muted);font-size:16px;margin:0 0 28px}
+  .search{display:flex;gap:10px;max-width:620px;margin:18px auto 34px}
+  input,select{background:var(--card);border:1px solid rgba(255,255,255,.18);color:var(--text);
+               border-radius:14px;padding:16px 18px;font-size:17px;outline:none}
+  input{flex:1}
+  input:focus,select:focus{border-color:var(--accent)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:16px;
+        padding:20px 12px;cursor:pointer;transition:.18s;text-decoration:none;color:var(--text)}
+  .card:hover{transform:translateY(-3px);border-color:var(--accent);background:rgba(255,255,255,.14)}
+  .card .n{font-size:28px}
+  .card b{display:block;margin-top:8px}
+  .card span{color:var(--muted);font-size:13px}
+  .foot{margin-top:44px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Q1</div>
+  <h1>Q1 Browser</h1>
+  <p>Search privately, browse fast, and ask the built-in AI assistant.</p>
+
+  <div class="search">
+    <input id="q" placeholder="Search or enter an address…" autofocus>
+    <button id="go" style="background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;border-radius:14px;
+        color:#fff;font-size:17px;padding:0 24px;cursor:pointer">Go</button>
+  </div>
+
+  <div class="grid">
+    <a class="card" href="https://www.google.com"><div class="n">🔎</div><b>Google</b><span>Search engine</span></a>
+    <a class="card" href="https://duckduckgo.com"><div class="n">🦆</div><b>DuckDuckGo</b><span>Private search</span></a>
+    <a class="card" href="https://www.youtube.com"><div class="n">▶</div><b>YouTube</b><span>Video</span></a>
+    <a class="card" href="https://github.com"><div class="n">🐙</div><b>GitHub</b><span>Code</span></a>
+    <a class="card" href="https://chat.openai.com"><div class="n">🤖</div><b>AI Chat</b><span>Assistant</span></a>
+    <a class="card" href="https://www.wikipedia.org"><div class="n">📚</div><b>Wikipedia</b><span>Reference</span></a>
+  </div>
+
+  <div class="foot">Built-in AI works with any OpenAI-compatible endpoint (Ollama, LM Studio, Groq, OpenAI…)</div>
+</div>
+<script>
+  const input = document.getElementById('q');
+  const go = document.getElementById('go');
+  const navigate = () => {
+    const v = input.value.trim();
+    if (!v) return;
+    let url;
+    if (/^https?:\/\//i.test(v)) { url = v; }
+    else if (/^(www\.)?[^ ]+\.[a-z]{2,}(\/.*)?$/i.test(v)) { url = 'https://' + v.replace(/^www\./i,''); }
+    else { url = 'https://duckduckgo.com/?q=' + encodeURIComponent(v); }
+    location.href = url;  // this page is file:///; the browser's navigation will open it in the same tab
+  };
+  go.addEventListener('click', navigate);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') navigate(); });
+  input.focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+# Q1 Browser Windows build (PyInstaller + GitHub Actions).
+# Enable GitHub Actions in the repo, then move/copy this file to
+# .github/workflows/build-windows.yml to build automatically.
+name: Build Windows
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build portable bundle
+        run: |
+          python build.py --portable
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Q1Browser-Windows-Portable
+          path: dist/Q1Browser-Windows-Portable.zip
+          if-no-files-found: error
