@@ -19,17 +19,30 @@
 
 ## ✅ دانلود و نصب (ویندوز)
 
-ساده‌ترین راه، دانلود نسخه‌ی آماده از صفحه‌ی Releases گیت‌هاب است:
+نسخه‌ی آماده‌ی ویندوز در صفحه‌ی Releases و در خود مخزن موجود است:
 
-> 👉 **https://github.com/tagharpro/Q1/releases**
+> 👉 **https://github.com/tagharpro/Q1/releases/tag/v1.0.0-windows**
 
-1. فایل `Q1Browser-Windows-Portable.zip` را دانلود کنید.
-2. فایل را از حالت فشرده خارج کنید.
-3. فایل `Q1Browser.exe` را اجرا کنید.
-4. سیستم‌عامل ممکن است از شما تأیید بگیرد؛ **More info → Run anyway** را بزنید.
+چون گیت‌هاب اجازه‌ی آپلود asset جداگانه نداشت، فایل Portable به‌صورت **سه بخش** داخل مخزن قرار دارد:
+
+| فایل | حجم | لینک |
+| --- | --- | --- |
+| `dist/Q1Browser-Windows-Portable.zip.000` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.000) |
+| `dist/Q1Browser-Windows-Portable.zip.001` | ~76 MB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.001) |
+| `dist/Q1Browser-Windows-Portable.zip.002` | ~67 MB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser-Windows-Portable.zip.002) |
+| `dist/Q1Browser.exe` | ~186 KB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/Q1Browser.exe) |
+| `dist/merge-windows.bat` | ~1 KB | [دانلود](https://github.com/tagharpro/Q1/blob/arena/01a06bae-q1/dist/merge-windows.bat) |
+
+### روش نصب
+
+1. هر **۳ فایل `.zip.000` و `.zip.001` و `.zip.002`** و فایل `merge-windows.bat` را در یک پوشه دانلود کنید.
+2. روی `merge-windows.bat` دوبار کلیک کنید تا فایل `Q1Browser-Windows-Portable.zip` ساخته شود.
+3. فایل ZIP را Extract کنید.
+4. داخل پوشه‌ی Extract شده روی `Q1Browser.exe` دوبار کلیک کنید.
+5. سیستم‌عامل ممکن است از شما تأیید بگیرد؛ **More info → Run anyway** را بزنید.
    (فایل امضای دیجیتال تجاری ندارد، چون پروژه‌ی متن‌باز/شخصی است.)
 
-دیگر نیازی به نصب نیست — این نسخه **پورتابل** است و بدون نصب اجرا می‌شود.
+دیگر نیازی به نصب نیست — این نسخه **پورتابل** است، بدون نصب اجرا می‌شود و شامل Python و Qt WebEngine داخلی است.
 
 ---
 
